@@ -2,10 +2,10 @@ package project.event;
 
 import java.time.LocalDateTime;
 
-public class RateEvent extends WeatherEvent {
+public class Event extends WeatherEvent {
     private final LocalDateTime timestamp;
 
-    public RateEvent() {
+    public Event() {
         timestamp = LocalDateTime.now();
     }
 
@@ -15,7 +15,7 @@ public class RateEvent extends WeatherEvent {
 
     @java.lang.Override
     public java.lang.String toString() {
-        return "RateEvent(timestamp=" + this.getTimestamp() + ")";
+        return "Event(timestamp=" + this.getTimestamp() + ")";
     }
 
 }

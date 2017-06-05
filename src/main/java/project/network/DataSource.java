@@ -6,17 +6,13 @@ import io.netty.buffer.ByteBuf;
 import io.netty.util.CharsetUtil;
 import io.reactivex.netty.protocol.http.client.HttpClientRequest;
 import io.reactivex.netty.protocol.http.client.HttpClientResponse;
-import project.event.ErrorEvent;
-import project.event.NetworkRequestFinishedEvent;
-import project.event.NetworkRequestIssuedEvent;
-import project.event.RateEvent;
-import project.event.RefreshRequestEvent;
-import project.event.WeatherEvent;
+import project.event.*;
+import project.event.Event;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
-public abstract class RateDataSource {
-    private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(RateDataSource.class);
+public abstract class DataSource {
+    private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(DataSource.class);
 
     private static final int POLL_INTERVAL = 60;
     private static final int INITIAL_DELAY = 3;
@@ -41,7 +37,7 @@ public abstract class RateDataSource {
         return Observable.interval(INITIAL_DELAY, POLL_INTERVAL, TimeUnit.SECONDS, Schedulers.io());
     }
 
-    protected abstract <T> Observable<? extends RateEvent> makeRequest();
+    protected abstract <T> Observable<? extends Event> makeRequest();
 
     protected HttpClientRequest<ByteBuf> prepareHttpGETRequest(String url) {
 		/*
