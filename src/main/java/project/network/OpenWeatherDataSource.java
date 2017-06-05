@@ -39,7 +39,7 @@ public class OpenWeatherDataSource extends DataSource {
                             weatherJsonObject.get(PRESSURE_JSON_KEY).getAsInt(),
                             cloudsJsonObject.get(CLOUDS_PERC_JSON_KEY).getAsInt(),
                             windJsonObject.get(WIND_SPEED_JSON_KEY).getAsFloat(),
-                            windJsonObject.get(WIND_DIRECTION_JSON_KEY).getAsFloat(),
+                            windJsonObject.get(WIND_DIRECTION_JSON_KEY).getAsInt(),
                             weatherJsonObject.get(HUMIDITY_JSON_KEY).getAsInt());
                 });
     }

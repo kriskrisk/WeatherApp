@@ -5,10 +5,10 @@ public class WeatherBasicEvent extends Event {
     private int pressure;
     private int clouds;
     private float windSpeed;
-    private float windDirection;
+    private int windDirection;
     private int humidity;
 
-    public WeatherBasicEvent(float temperature, int pressure, int clouds, float windSpeed, float windDirection, int humidity) {
+    public WeatherBasicEvent(float temperature, int pressure, int clouds, float windSpeed, int windDirection, int humidity) {
         this.temperature = temperature;
         this.pressure = pressure;
         this.clouds = clouds;

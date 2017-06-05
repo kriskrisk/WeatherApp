@@ -43,7 +43,7 @@ public class MeteoDataSource extends DataSource {
             int pressure = 0;
             int clouds = 0;//brak informacji o chmurach
             float windSpeed = 0;
-            float windDirection = 0;
+            int windDirection = 0;
             int humidity = 0;
 
             if (temperatureM.find()) {
@@ -53,7 +53,7 @@ public class MeteoDataSource extends DataSource {
             }
 
             if (pressureM.find()) {
-                pressure = (int)Float.parseFloat(pressureM.group(1).trim());
+                pressure = Integer.parseInt(pressureM.group(1).trim());
             } else {
                 foundAll = false;
             }
@@ -65,13 +65,43 @@ public class MeteoDataSource extends DataSource {
             }
 
             if (windDirectionM.find()) {
-                windDirection = Float.parseFloat(windDirectionM.group(1).trim());
+                String direction = windDirectionM.group(1).trim();
+
+                switch (direction) {
+                    case "N":
+                        windDirection = 0;
+                        break;
+                    case "NE":
+                        windDirection = 45;
+                        break;
+                    case "E":
+                        windDirection = 90;
+                        break;
+                    case "SE":
+                        windDirection = 135;
+                        break;
+                    case "S":
+                        windDirection = 180;
+                        break;
+                    case "SW":
+                        windDirection = 225;
+                        break;
+                    case "W":
+                        windDirection = 270;
+                        break;
+                    case "NW":
+                        windDirection = 315;
+                        break;
+                    default:
+                        foundAll = false;
+                        break;
+                }
             } else {
                 foundAll = false;
             }
 
             if (humidityM.find()) {
-                humidity = (int)Float.parseFloat(humidityM.group(1).trim());
+                humidity = Integer.parseInt(humidityM.group(1).trim());
             } else {
                 foundAll = false;
             }
