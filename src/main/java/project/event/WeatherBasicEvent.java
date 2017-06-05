@@ -1,6 +1,6 @@
 package project.event;
 
-public class WeatherBasicEvent {
+public class WeatherBasicEvent extends Event {
     private float temperature;
     private int pressure;
     private int clouds;

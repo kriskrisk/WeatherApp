@@ -7,7 +7,7 @@ import rx.Observable;
 
 public class OpenWeatherDataSource extends DataSource {
 
-    private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q=Warsaw";
+    private static final String URL = "http://api.openweathermap.org/data/2.5/weather?q=Warsaw";
 
     private static final String MAIN_JSON_KEY = "main";
     private static final String WIND_JSON_KEY = "wind";
@@ -21,11 +21,10 @@ public class OpenWeatherDataSource extends DataSource {
 
     @Override
     protected Observable<WeatherBasicEvent> makeRequest() {
-        String url = BASE_URL;
 
         return RxNetty
                 .createHttpRequest( // create an HTTP request using RxNetty
-                        JsonHelper.withJsonHeader(prepareHttpGETRequest(url)))
+                        JsonHelper.withJsonHeader(prepareHttpGETRequest(URL)))
                 // add an HTTP request header that instructs the server to
                 // respond with JSON
                 .compose(this::unpackResponse) // extract response body to a
