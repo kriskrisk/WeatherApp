@@ -1,4 +1,4 @@
-package pl.edu.mimuw.xchange.control;
+package project.control;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

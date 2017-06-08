@@ -2,27 +2,33 @@ package project.network;
 
 import static project.event.EventStream.eventStream;
 
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.util.CharsetUtil;
 import io.reactivex.netty.protocol.http.client.HttpClientRequest;
 import io.reactivex.netty.protocol.http.client.HttpClientResponse;
-import project.event.*;
+import project.event.ErrorEvent;
+import project.event.NetworkRequestFinishedEvent;
+import project.event.NetworkRequestIssuedEvent;
 import project.event.Event;
+import project.event.RefreshRequestEvent;
+import project.event.WeatherEvent;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
 public abstract class DataSource {
     private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(DataSource.class);
 
-    private static final int POLL_INTERVAL = 60;
+    private static final int DEFAULT_POLL_INTERVAL = 60;
     private static final int INITIAL_DELAY = 3;
     private static final int TIMEOUT = 20;
 
     public Observable<? extends WeatherEvent> dataSourceStream() {
+        return dataSourceStream(DEFAULT_POLL_INTERVAL);
+    }
+
+    public Observable<? extends WeatherEvent> dataSourceStream(Integer pollInterval) {
 		/*
 		 * This creates a stream of data events. Each event emitted corresponds
 		 * to a piece of data fetched from a remote (i.e. Internet) data source.
@@ -33,15 +39,18 @@ public abstract class DataSource {
 		 * handled here). The code below essentially merges events that arrive
 		 * via one of the two routes into a single stream of events.
 		 */
-        return fixedIntervalStream().compose(this::wrapRequest)
+        if (pollInterval == null) {
+            pollInterval = DEFAULT_POLL_INTERVAL;
+        }
+        return fixedIntervalStream(pollInterval).compose(this::wrapRequest)
                 .mergeWith(eventStream().eventsInIO().ofType(RefreshRequestEvent.class).compose(this::wrapRequest));
     }
 
-    protected Observable<Long> fixedIntervalStream() {
-        return Observable.interval(INITIAL_DELAY, POLL_INTERVAL, TimeUnit.SECONDS, Schedulers.io());
+    protected Observable<Long> fixedIntervalStream(int pollInterval) {
+        return Observable.interval(INITIAL_DELAY, pollInterval, TimeUnit.SECONDS, Schedulers.io());
     }
 
-    protected abstract <T> Observable<? extends Event> makeRequest();
+    protected abstract Observable<? extends Event> makeRequest();
 
     protected HttpClientRequest<ByteBuf> prepareHttpGETRequest(String url) {
 		/*
@@ -51,7 +60,7 @@ public abstract class DataSource {
         return HttpClientRequest.createGet(url);
     }
 
-    protected <T> Observable<String> unpackResponse(Observable<HttpClientResponse<ByteBuf>> responseObservable) {
+    protected Observable<String> unpackResponse(Observable<HttpClientResponse<ByteBuf>> responseObservable) {
 		/*
 		 * Extracts HTTP response's body to a plain Java string
 		 */
@@ -88,18 +97,5 @@ public abstract class DataSource {
                 // NetworkRequestFinishedEvent
                 // after
         );
-    }
-
-    double parseDouble(String input) {
-        NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
-        Number number = null;
-
-        try {
-            number = format.parse(input);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return number.doubleValue();
     }
 }

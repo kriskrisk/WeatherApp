@@ -56,8 +56,8 @@ public class ValueControl extends Pane {
                 return null;
             }
 
-            float current = buffer.get(1).getValue();
-            float prev = buffer.get(0).getValue();
+            double current = buffer.get(1).getValue();
+            double prev = buffer.get(0).getValue();
 
             if (prev < current) {
                 return upIcon;
