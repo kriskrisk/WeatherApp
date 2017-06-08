@@ -43,7 +43,7 @@ import project.network.MeteoDataSource;
 public class WeatherApp extends Application {
     private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(WeatherApp.class);
 
-    private static final String FXML_MAIN_FORM_TEMPLATE = "/fxml/xchange-main.fxml";
+    private static final String FXML_MAIN_FORM_TEMPLATE = "/fxml/weather-main.fxml";
     private static final String FXML_CLOSE_DIALOG_TEMPLATE = "/fxml/close-dialog.fxml";
     private static final String FXML_SETTINGS_DIALOG_TEMPLATE = "/fxml/settings-dialog.fxml";
 
@@ -259,7 +259,7 @@ public class WeatherApp extends Application {
         setupTextRendering();
 
         Platform.setImplicitExit(true); // This should exit the application when
-        // the main window gets closed
+                                        // the main window gets closed
         Application.launch(WeatherApp.class, args);
     }
 }

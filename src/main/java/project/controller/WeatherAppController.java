@@ -70,27 +70,27 @@ public class WeatherAppController {
 
     }
 
-    public Observable<RawWeatherEvent<Double>> getTemperature() {
+    public Observable<RawWeatherEvent> getTemperature() {
         return getCurrencyStream(WeatherBasicEvent::getTemperature);
     }
 
-    public Observable<RawWeatherEvent<Double>> getPressure() {
+    public Observable<RawWeatherEvent> getPressure() {
         return getCurrencyStream(WeatherBasicEvent::getPressure);
     }
 
-    public Observable<RawWeatherEvent<Integer>> getClouds() {
+    public Observable<RawWeatherEvent> getClouds() {
         return getCurrencyStream(WeatherBasicEvent::getClouds);
     }
 
-    public Observable<RawWeatherEvent<Double>> getWindSpeed() {
+    public Observable<RawWeatherEvent> getWindSpeed() {
         return getCurrencyStream(WeatherBasicEvent::getWindSpeed);
     }
 
-    public Observable<RawWeatherEvent<Integer>> getWindDirection() {
+    public Observable<RawWeatherEvent> getWindDirection() {
         return getCurrencyStream(WeatherBasicEvent::getWindDirection);
     }
 
-    public Observable<RawWeatherEvent<Double>> getHumidity() {
+    public Observable<RawWeatherEvent> getHumidity() {
         return getCurrencyStream(WeatherBasicEvent::getHumidity);
     }
 
@@ -182,9 +182,9 @@ public class WeatherAppController {
 
     }
 
-    private <T> Observable<RawWeatherEvent<T>> getCurrencyStream(Func1<WeatherBasicEvent, T> extractor) {
+    private <T> Observable<RawWeatherEvent> getCurrencyStream(Func1<WeatherBasicEvent, Double> extractor) {
         return eventStream().eventsInFx().ofType(WeatherBasicEvent.class)
-                .map(e -> new RawWeatherEvent<>(e.getTimestamp(), extractor.call(e)));
+                .map(e -> new RawWeatherEvent(e.getTimestamp(), extractor.call(e)));
     }
 
 //    private Observable<RawWeatherEvent> getGoodsStream(GoodType type) {

@@ -7,6 +7,8 @@ import rx.Observable;
 
 import java.text.DecimalFormat;
 
+//import static java.lang.Double.parseDouble;
+
 public class OpenWeatherDataSource extends DataSource {
 
     private static final String URL = "http://api.openweathermap.org/data/2.5/weather?q=Warsaw&APPID=6e4867df339d71f8b66f2a5a84c17b2d";
@@ -41,9 +43,9 @@ public class OpenWeatherDataSource extends DataSource {
                             weatherJsonObject.get(TEMPERATURE_JSON_KEY).getAsDouble() - 273.15));
                     return new WeatherBasicEvent(temp,
                             weatherJsonObject.get(PRESSURE_JSON_KEY).getAsDouble(),
-                            cloudsJsonObject.get(CLOUDS_PERC_JSON_KEY).getAsInt(),
+                            cloudsJsonObject.get(CLOUDS_PERC_JSON_KEY).getAsDouble(),
                             windJsonObject.get(WIND_SPEED_JSON_KEY).getAsDouble(),
-                            windJsonObject.get(WIND_DIRECTION_JSON_KEY).getAsInt(),
+                            windJsonObject.get(WIND_DIRECTION_JSON_KEY).getAsDouble(),
                             weatherJsonObject.get(HUMIDITY_JSON_KEY).getAsDouble());
                 });
     }

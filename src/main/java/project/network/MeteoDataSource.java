@@ -11,6 +11,8 @@ import project.event.WeatherBasicEvent;
 import rx.Observable;
 import rx.exceptions.Exceptions;
 
+//import static java.lang.Double.parseDouble;
+
 public class MeteoDataSource extends DataSource {
 
     private static final String URL = "http://www.meteo.waw.pl/";
@@ -32,7 +34,7 @@ public class MeteoDataSource extends DataSource {
             "<span id=\"PARAM_0_RH\">([0-9,]*)</span>", Pattern.CASE_INSENSITIVE);
 
     @Override
-    protected <T> Observable<WeatherBasicEvent> makeRequest() {
+    protected Observable<WeatherBasicEvent> makeRequest() {
 
         return RxNetty.createHttpRequest(prepareHttpGETRequest(URL)).compose(this::unpackResponse).map(htmlSource -> {
             Matcher temperatureM = TEMPERATURE_RE.matcher(htmlSource);
@@ -46,7 +48,7 @@ public class MeteoDataSource extends DataSource {
             double temperature = 0;
             double pressure = 0;
             double windSpeed = 0;
-            int windDirection = 0;
+            double windDirection = 0;
             double humidity = 0;
 
             if (temperatureM.find()) {

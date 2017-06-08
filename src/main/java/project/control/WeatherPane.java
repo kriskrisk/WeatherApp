@@ -36,7 +36,7 @@ public class WeatherPane extends StackPane {
 
     private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(WeatherPane.class);
 
-    private static final String FXML_TEMPLATE = "/fxml/rate-pane.fxml";
+    private static final String FXML_TEMPLATE = "/fxml/weather-pane.fxml";
 
     @FXML
     private GridPane containerGrid;
