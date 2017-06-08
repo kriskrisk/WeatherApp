@@ -1,16 +1,20 @@
 package project.network;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import io.reactivex.netty.RxNetty;
 import project.event.WeatherBasicEvent;
-//import project.event.WeatherBasicEvent;
+import project.event.WeatherBasicEvent;
 import rx.Observable;
 import rx.exceptions.Exceptions;
 
 public class MeteoDataSource extends DataSource {
 
     private static final String URL = "http://www.meteo.waw.pl/";
+    private static final int NO_INFO = 0;
 
     private class BitcoinRateNotFoundException extends Exception {
         private static final long serialVersionUID = 1L;
@@ -23,7 +27,7 @@ public class MeteoDataSource extends DataSource {
     private static final Pattern WIND_SPEED_RE = Pattern.compile(
             "<span id=\"PARAM_0_WV\">([0-9,]*)</span>", Pattern.CASE_INSENSITIVE);
     private static final Pattern WIND_DIRECTION_RE = Pattern.compile(
-            "<span id=\"PARAM_0_WV\">([NWES]*)</span>", Pattern.CASE_INSENSITIVE);
+            "<span id=\"PARAM_0_WDABBR\">([A-Z]*)</span>", Pattern.CASE_INSENSITIVE);
     private static final Pattern HUMIDITY_RE = Pattern.compile(
             "<span id=\"PARAM_0_RH\">([0-9,]*)</span>", Pattern.CASE_INSENSITIVE);
 
@@ -39,27 +43,26 @@ public class MeteoDataSource extends DataSource {
 
             boolean foundAll = true;
 
-            float temperature = 0;
-            int pressure = 0;
-            int clouds = 0;//brak informacji o chmurach
-            float windSpeed = 0;
+            double temperature = 0;
+            double pressure = 0;
+            double windSpeed = 0;
             int windDirection = 0;
-            int humidity = 0;
+            double humidity = 0;
 
             if (temperatureM.find()) {
-                temperature = Float.parseFloat(temperatureM.group(1).trim());
+                temperature = parseDouble(temperatureM.group(1).trim());
             } else {
                 foundAll = false;
             }
 
             if (pressureM.find()) {
-                pressure = Integer.parseInt(pressureM.group(1).trim());
+                pressure = parseDouble(pressureM.group(1).trim());
             } else {
                 foundAll = false;
             }
 
             if (windSpeedM.find()) {
-                windSpeed = Float.parseFloat(windSpeedM.group(1).trim());
+                windSpeed = parseDouble(windSpeedM.group(1).trim());
             } else {
                 foundAll = false;
             }
@@ -101,13 +104,13 @@ public class MeteoDataSource extends DataSource {
             }
 
             if (humidityM.find()) {
-                humidity = Integer.parseInt(humidityM.group(1).trim());
+                humidity = parseDouble(humidityM.group(1).trim());
             } else {
                 foundAll = false;
             }
 
             if (foundAll) {
-                return new WeatherBasicEvent(temperature, pressure, clouds, windSpeed, windDirection, humidity);
+                return new WeatherBasicEvent(temperature, pressure, NO_INFO, windSpeed, windDirection, humidity);
             }
             throw Exceptions.propagate(new BitcoinRateNotFoundException());
         });

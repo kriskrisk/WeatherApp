@@ -1,6 +1,10 @@
 package project.network;
 
 import static project.event.EventStream.eventStream;
+
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.CharsetUtil;
@@ -84,5 +88,18 @@ public abstract class DataSource {
                 // NetworkRequestFinishedEvent
                 // after
         );
+    }
+
+    double parseDouble(String input) {
+        NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
+        Number number = null;
+
+        try {
+            number = format.parse(input);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return number.doubleValue();
     }
 }

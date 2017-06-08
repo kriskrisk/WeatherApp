@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import project.control.SpinningFontIcon?>
+<?import project.control.WeatherPane?>
+<?import project.control.ValueControl?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXDialog?>
+<?import com.jfoenix.controls.JFXDialogLayout?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.112-ea"
+           fx:controller="project.controller.WeatherAppController"
+           id="main" stylesheets="@../css/weather.css" styleClass="body1">
+
+<BorderPane>
+    <center>
+        <GridPane id="ratesGrid">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50" />
+                <ColumnConstraints percentWidth="50" />
+            </columnConstraints>
+
+            <rowConstraints>
+                <RowConstraints percentHeight="50" />
+                <RowConstraints percentHeight="50" />
+            </rowConstraints>
+
+            <WeatherPane GridPane.rowIndex="0" GridPane.columnIndex="0">
+                <image>
+                    <FontIcon styleClass="rate-icon" iconLiteral="fa-eur" />
+                </image>
+                <rates>
+                    <ValueControl fx:id="temperatureControl"
+                                      source="$controller.euroAskPrice" prefix="Temperatura:" title="temperature" />
+                    <ValueControl fx:id="euroBidControl"
+                                      source="$controller.euroBidPrice" prefix="BID:" title="EUR/PLN bid price" />
+                </rates>
+            </WeatherPane>
+
+            <WeatherPane GridPane.rowIndex="1" GridPane.columnIndex="0">
+                <image>
+                    <FontIcon styleClass="rate-icon" iconLiteral="fa-btc" />
+                </image>
+                <rates>
+                    <ValueControl fx:id="bitcoinControl"
+                                      source="$controller.bitcoinPrice" format="0" title="BTC/PLN rate" />
+                </rates>
+            </WeatherPane>
+
+            <WeatherPane GridPane.rowIndex="0" GridPane.columnIndex="1">
+                <image>
+                    <FontIcon styleClass="rate-icon" iconLiteral="fa-usd" />
+                </image>
+                <rates>
+                    <ValueControl fx:id="usdAskControl" source="$controller.USDAskPrice"
+                                      prefix="ASK:" title="USD/PLN ask price" />
+                    <ValueControl fx:id="usdBidControl" source="$controller.USDBidPrice"
+                                      prefix="BID:" title="USD/PLN bid price" />
+                </rates>
+            </WeatherPane>
+
+            <WeatherPane GridPane.rowIndex="1" GridPane.columnIndex="1">
+                <image>
+                    <Pane id="gold-icon">
+                        <shape>
+                            <SVGPath
+                                    content="M476.062,211.48l-29.922-7.484l2.953-1.32l-35.922-81.969l-71.859-17.961L99.914,208.277L82.531,243.05l-45.492,19.883    L0,337.035l125.781,36.125l125.781,36.094L512,293.441L476.062,211.48z M421.031,191.809L194.359,292.613l-11.57-57.844    l215.164-95.633L421.031,191.809z M427.594,221.348L231.36,308.567l-12.383-3.562l195.508-86.93L427.594,221.348z     M343.188,125.199l21.5,5.375l-196.234,87.219l-22.359-6.422L343.188,125.199z M30.563,323.629l22.078-44.188l46.172,13.266    l10.719,53.578L30.563,323.629z M107.742,273.067l-14.312-4.109l22.086-44.165l46.172,13.258l10.719,53.578l-62.422-17.906    l0.023-0.578L107.742,273.067z M131.484,347.27l-9.586-47.953l35.664,10.25l-16.781,33.562L131.484,347.27z M156.336,359.722    l22.078-44.156l46.18,13.25l10.719,53.594L156.336,359.722z M245.696,325.535L460.86,229.91l23.078,52.672L257.266,383.379    L245.696,325.535z"></SVGPath>
+                        </shape>
+                    </Pane>
+                </image>
+                <rates>
+                    <ValueControl fx:id="goldControl" source="$controller.goldPrice"
+                                      format="0.00" title="Gold price" />
+                </rates>
+            </WeatherPane>
+
+        </GridPane>
+    </center>
+
+
+    <bottom>
+        <HBox id="statusContainer">
+            <JFXButton fx:id="settingsButton">
+                <graphic>
+                    <FontIcon iconLiteral="fa-wrench" />
+                </graphic>
+            </JFXButton>
+            <JFXButton fx:id="refreshButton">
+                <graphic>
+                    <FontIcon iconLiteral="fa-refresh" />
+                </graphic>
+            </JFXButton>
+            <Region HBox.hgrow="ALWAYS" />
+            <FontIcon fx:id="errorIcon" iconLiteral="fa-exclamation-triangle" />
+            <SpinningFontIcon fx:id="workingIcon" iconLiteral="fa-cog" />
+        </HBox>
+    </bottom>
+
+</BorderPane>
+
+</StackPane>

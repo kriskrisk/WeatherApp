@@ -7,9 +7,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import project.event.SettingsRequestEvent;
+import project.event.WeatherEvent;
 import project.network.DataSource;
 import project.network.MeteoDataSource;
 import project.network.OpenWeatherDataSource;
+import rx.Observable;
 import rx.Subscription;
 
 import javafx.scene.control.Button;
@@ -18,12 +21,15 @@ import java.awt.event.ActionEvent;
 import java.util.LinkedList;
 import java.util.List;
 
+import static project.event.EventStream.eventStream;
 import static project.event.EventStream.joinStream;
 
 public class WeatherApp extends Application {
     private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(WeatherApp.class);
     private List<Subscription> sourceStreams = new LinkedList<>();
     private static final String FXML_MAIN_FORM_TEMPLATE = "/fxml/xchange-main.fxml";
+    //private Stage mainStage;
+
 
     private void setupDataSources() {
         DataSource[] sources = { new OpenWeatherDataSource(),
@@ -33,29 +39,25 @@ public class WeatherApp extends Application {
         }
     }
 
+    private void setupEventHandler() {
+        Observable<WeatherEvent> events = eventStream().events();
+
+        events.subscribe(log::info);
+        //.ofType(Event.class) - niepotrzebne
+
+        //events.ofType(SettingsRequestEvent.class).subscribe(e -> onSettingsRequested());
+    }
+
     @Override
     public void start(Stage primaryStage) {
         log.info("Starting Weather application...");
 
+        //mainStage = primaryStage;
+
         setupDataSources();
 
-        Parent pane = FXMLLoader.load(WeatherApp.class.getResource(FXML_MAIN_FORM_TEMPLATE));
+        setupEventHandler();
 
-        primaryStage.setTitle("Hello World!");
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
-
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        primaryStage.setScene(new Scene(root, 300, 250));
-        primaryStage.show();
     }
 
     public static void main(String[] args) {

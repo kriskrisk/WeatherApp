@@ -1,14 +1,14 @@
 package project.event;
 
 public class WeatherBasicEvent extends Event {
-    private float temperature;
-    private int pressure;
+    private double temperature;
+    private double pressure;
     private int clouds;
-    private float windSpeed;
+    private double windSpeed;
     private int windDirection;
-    private int humidity;
+    private double humidity;
 
-    public WeatherBasicEvent(float temperature, int pressure, int clouds, float windSpeed, int windDirection, int humidity) {
+    public WeatherBasicEvent(double temperature, double pressure, int clouds, double windSpeed, int windDirection, double humidity) {
         this.temperature = temperature;
         this.pressure = pressure;
         this.clouds = clouds;
@@ -17,27 +17,27 @@ public class WeatherBasicEvent extends Event {
         this.humidity = humidity;
     }
 
-    public float getTemperature() {
+    public double getTemperature() {
         return temperature;
     }
 
-    public int getPressure() {
+    public double getPressure() {
         return pressure;
     }
 
-    public float getClouds() {
+    public int getClouds() {
         return clouds;
     }
 
-    public float getWindSpeed() {
+    public double getWindSpeed() {
         return windSpeed;
     }
 
-    public float getWindDirection() {
+    public int getWindDirection() {
         return windDirection;
     }
 
-    public int getHumidity() {
+    public double getHumidity() {
         return humidity;
     }
 

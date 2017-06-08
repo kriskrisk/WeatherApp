@@ -5,9 +5,11 @@ import io.reactivex.netty.RxNetty;
 import project.event.WeatherBasicEvent;
 import rx.Observable;
 
+import java.text.DecimalFormat;
+
 public class OpenWeatherDataSource extends DataSource {
 
-    private static final String URL = "http://api.openweathermap.org/data/2.5/weather?q=Warsaw";
+    private static final String URL = "http://api.openweathermap.org/data/2.5/weather?q=Warsaw&APPID=6e4867df339d71f8b66f2a5a84c17b2d";
 
     private static final String MAIN_JSON_KEY = "main";
     private static final String WIND_JSON_KEY = "wind";
@@ -35,12 +37,14 @@ public class OpenWeatherDataSource extends DataSource {
                     JsonObject weatherJsonObject = jsonObject.get(MAIN_JSON_KEY).getAsJsonObject();
                     JsonObject windJsonObject = jsonObject.get(WIND_JSON_KEY).getAsJsonObject();
                     JsonObject cloudsJsonObject = jsonObject.get(CLOUDS_JSON_KEY).getAsJsonObject();
-                    return new WeatherBasicEvent(weatherJsonObject.get(TEMPERATURE_JSON_KEY).getAsFloat(),
-                            weatherJsonObject.get(PRESSURE_JSON_KEY).getAsInt(),
+                    double temp = parseDouble(new DecimalFormat(".#").format(
+                            weatherJsonObject.get(TEMPERATURE_JSON_KEY).getAsDouble() - 273.15));
+                    return new WeatherBasicEvent(temp,
+                            weatherJsonObject.get(PRESSURE_JSON_KEY).getAsDouble(),
                             cloudsJsonObject.get(CLOUDS_PERC_JSON_KEY).getAsInt(),
-                            windJsonObject.get(WIND_SPEED_JSON_KEY).getAsFloat(),
+                            windJsonObject.get(WIND_SPEED_JSON_KEY).getAsDouble(),
                             windJsonObject.get(WIND_DIRECTION_JSON_KEY).getAsInt(),
-                            weatherJsonObject.get(HUMIDITY_JSON_KEY).getAsInt());
+                            weatherJsonObject.get(HUMIDITY_JSON_KEY).getAsDouble());
                 });
     }
 
