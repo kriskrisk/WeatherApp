@@ -9,7 +9,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.text.MessageFormat;
 import java.time.format.DateTimeFormatter;
-import java.util.Currency;
 import java.util.concurrent.TimeUnit;
 
 import javafx.fxml.FXML;
@@ -17,18 +16,9 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import project.control.WeatherTooltip;
-import pl.edu.mimuw.xchange.event.CurrencyRateEvent;
 import project.WeatherApp;
 import project.control.ValueControl;
-import project.event.ErrorEvent;
-import pl.edu.mimuw.xchange.event.GoodType;
-import project.event.NetworkRequestFinishedEvent;
-import project.event.NetworkRequestIssuedEvent;
-import project.event.RawWeatherEvent;
-import project.event.RefreshRequestEvent;
-import project.event.SettingsRequestEvent;
-import pl.edu.mimuw.xchange.event.TradeableGoodRateEvent;
-import project.event.WeatherEvent;
+import project.event.*;
 import rx.Observable;
 import rx.functions.Func1;
 import rx.observables.JavaFxObservable;
@@ -43,19 +33,19 @@ public class WeatherAppController {
     private ValueControl temperatureControl;
 
     @FXML
-    private ValueControl euroBidControl;
+    private ValueControl pressureControl;
 
     @FXML
-    private ValueControl usdAskControl;
+    private ValueControl cloudsControl;
 
     @FXML
-    private ValueControl usdBidControl;
+    private ValueControl windSpeedControl;
 
     @FXML
-    private ValueControl bitcoinControl;
+    private ValueControl windDirectionControl;
 
     @FXML
-    private ValueControl goldControl;
+    private ValueControl humidityControl;
 
     @FXML
     private Node errorIcon;
@@ -80,28 +70,28 @@ public class WeatherAppController {
 
     }
 
-    public Observable<RawWeatherEvent> getEuroAskPrice() {
-        return getCurrencyStream("EUR", CurrencyRateEvent::getAsk);
+    public Observable<RawWeatherEvent<Double>> getTemperature() {
+        return getCurrencyStream(WeatherBasicEvent::getTemperature);
     }
 
-    public Observable<RawWeatherEvent> getEuroBidPrice() {
-        return getCurrencyStream("EUR", CurrencyRateEvent::getBid);
+    public Observable<RawWeatherEvent<Double>> getPressure() {
+        return getCurrencyStream(WeatherBasicEvent::getPressure);
     }
 
-    public Observable<RawWeatherEvent> getUSDAskPrice() {
-        return getCurrencyStream("USD", CurrencyRateEvent::getAsk);
+    public Observable<RawWeatherEvent<Integer>> getClouds() {
+        return getCurrencyStream(WeatherBasicEvent::getClouds);
     }
 
-    public Observable<RawWeatherEvent> getUSDBidPrice() {
-        return getCurrencyStream("USD", CurrencyRateEvent::getBid);
+    public Observable<RawWeatherEvent<Double>> getWindSpeed() {
+        return getCurrencyStream(WeatherBasicEvent::getWindSpeed);
     }
 
-    public Observable<RawWeatherEvent> getGoldPrice() {
-        return getGoodsStream(GoodType.GOLD);
+    public Observable<RawWeatherEvent<Integer>> getWindDirection() {
+        return getCurrencyStream(WeatherBasicEvent::getWindDirection);
     }
 
-    public Observable<RawWeatherEvent> getBitcoinPrice() {
-        return getGoodsStream(GoodType.BITCOIN);
+    public Observable<RawWeatherEvent<Double>> getHumidity() {
+        return getCurrencyStream(WeatherBasicEvent::getHumidity);
     }
 
     private void initalizeRefreshHandler() {
@@ -179,8 +169,8 @@ public class WeatherAppController {
         });
         Tooltip.install(errorIcon, errorTooltip);
 
-        ValueControl[] weatherControls = { temperatureControl, euroBidControl, usdAskControl, usdBidControl,
-                bitcoinControl, goldControl };
+        ValueControl[] weatherControls = { temperatureControl, pressureControl, cloudsControl, windSpeedControl,
+                windDirectionControl, humidityControl };
         for (ValueControl control : weatherControls) {
             Tooltip tooltipPopup = new Tooltip();
             WeatherTooltip tooltipContent = new WeatherTooltip(control.getSource(), control.getTitle());
@@ -192,16 +182,14 @@ public class WeatherAppController {
 
     }
 
-    private Observable<RawWeatherEvent> getCurrencyStream(String currencySymbol,
-                                                       Func1<CurrencyRateEvent, Float> extractor) {
-        return eventStream().eventsInFx().ofType(CurrencyRateEvent.class)
-                .filter(e -> e.getCurrency().equals(Currency.getInstance(currencySymbol)))
-                .map(e -> new RawWeatherEvent(e.getTimestamp(), extractor.call(e)));
+    private <T> Observable<RawWeatherEvent<T>> getCurrencyStream(Func1<WeatherBasicEvent, T> extractor) {
+        return eventStream().eventsInFx().ofType(WeatherBasicEvent.class)
+                .map(e -> new RawWeatherEvent<>(e.getTimestamp(), extractor.call(e)));
     }
 
-    private Observable<RawWeatherEvent> getGoodsStream(GoodType type) {
-        return eventStream().eventsInFx().ofType(TradeableGoodRateEvent.class).filter(e -> e.getGood() == type)
-                .map(e -> new RawWeatherEvent(e.getTimestamp(), e.getRate()));
-    }
+//    private Observable<RawWeatherEvent> getGoodsStream(GoodType type) {
+//        return eventStream().eventsInFx().ofType(TradeableGoodRateEvent.class).filter(e -> e.getGood() == type)
+//                .map(e -> new RawWeatherEvent(e.getTimestamp(), e.getRate()));
+//    }
 
 }

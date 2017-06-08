@@ -2,11 +2,11 @@ package project.event;
 
 import java.time.LocalDateTime;
 
-public final class RawWeatherEvent extends WeatherEvent {
+public final class RawWeatherEvent <T> extends WeatherEvent {
     private final LocalDateTime timestamp;
-    private final float value;
+    private final T value;
 
-    public RawWeatherEvent(final LocalDateTime timestamp, final float value) {
+    public RawWeatherEvent(final LocalDateTime timestamp, final T value) {
         this.timestamp = timestamp;
         this.value = value;
     }
@@ -15,7 +15,7 @@ public final class RawWeatherEvent extends WeatherEvent {
         return this.timestamp;
     }
 
-    public float getValue() {
+    public T getValue() {
         return this.value;
     }
 
