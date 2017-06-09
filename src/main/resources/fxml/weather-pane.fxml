@@ -23,12 +23,14 @@
 <GridPane fx:id="containerGrid" xmlns:fx="http://javafx.com/fxml/1"
           xmlns="http://javafx.com/javafx/8.0.112-ea">
     <columnConstraints>
-        <ColumnConstraints percentWidth="40" />
-        <ColumnConstraints percentWidth="60" />
+        <ColumnConstraints percentWidth="100" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints percentHeight="50" />
-        <RowConstraints percentHeight="50" />
+        <RowConstraints percentHeight="20" />
+        <RowConstraints percentHeight="20" />
+        <RowConstraints percentHeight="20" />
+        <RowConstraints percentHeight="20" />
+        <RowConstraints percentHeight="20" />
     </rowConstraints>
     <StackPane fx:id="imageContainer" styleClass="rate-icon-container2"
                GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.rowSpan="2">

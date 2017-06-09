@@ -182,7 +182,7 @@ public class WeatherAppController {
 
     }
 
-    private <T> Observable<RawWeatherEvent> getCurrencyStream(Func1<WeatherBasicEvent, Double> extractor) {
+    private Observable<RawWeatherEvent> getCurrencyStream(Func1<WeatherBasicEvent, Double> extractor) {
         return eventStream().eventsInFx().ofType(WeatherBasicEvent.class)
                 .map(e -> new RawWeatherEvent(e.getTimestamp(), extractor.call(e)));
     }

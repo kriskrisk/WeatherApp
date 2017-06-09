@@ -16,21 +16,6 @@ import javafx.scene.layout.StackPane;
 import java.io.IOException;
 import java.util.Iterator;
 
-import java.io.IOException;
-import java.util.Iterator;
-import javafx.beans.DefaultProperty;
-import javafx.beans.Observable;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ObjectPropertyBase;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.HPos;
-import javafx.scene.Node;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-
 @DefaultProperty("rates")
 public class WeatherPane extends StackPane {
 
@@ -110,7 +95,7 @@ public class WeatherPane extends StackPane {
 
             int i = 0;
             for (Node n : rates) {
-                GridPane.setColumnIndex(n, 1);
+                GridPane.setColumnIndex(n, 0);
                 GridPane.setRowIndex(n, i);
                 GridPane.setRowSpan(n, 1);
                 GridPane.setHalignment(n, HPos.CENTER);

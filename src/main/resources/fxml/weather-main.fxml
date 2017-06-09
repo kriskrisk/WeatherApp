@@ -19,6 +19,12 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
+<?import javafx.stage.Screen?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.Label?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
 
 <StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.112-ea"
            fx:controller="project.controller.WeatherAppController"
@@ -28,13 +34,15 @@
     <center>
       <GridPane id="ratesGrid">
         <columnConstraints>
-          <ColumnConstraints percentWidth="50" />
-          <ColumnConstraints percentWidth="50" />
+          <ColumnConstraints percentWidth="100" />
         </columnConstraints>
 
         <rowConstraints>
-          <RowConstraints percentHeight="50" />
-          <RowConstraints percentHeight="50" />
+          <RowConstraints percentHeight="20" />
+          <RowConstraints percentHeight="20" />
+          <RowConstraints percentHeight="20" />
+          <RowConstraints percentHeight="20" />
+          <RowConstraints percentHeight="20" />
         </rowConstraints>
 
         <WeatherPane GridPane.rowIndex="0" GridPane.columnIndex="0">
@@ -45,7 +53,7 @@
             <ValueControl fx:id="temperatureControl"
                           source="$controller.temperature" prefix="Temperatura:" title="temperature" />
             <ValueControl fx:id="pressureControl"
-                          source="$controller.pressure" prefix="Ciśnienie:" title="ciśnienie" />
+                          source="$controller.pressure" prefix="Ciśnienie:" title="pressure" />
           </rates>
         </WeatherPane>
 
@@ -55,23 +63,23 @@
           </image>
           <rates>
             <ValueControl fx:id="cloudsControl"
-                          source="$controller.clouds" prefix="Zachmurzenie:" title="zachmurzenie" />
+                          source="$controller.clouds" prefix="Zachmurzenie:" title="clouds" />
           </rates>
         </WeatherPane>
 
-        <WeatherPane GridPane.rowIndex="0" GridPane.columnIndex="1">
+        <WeatherPane GridPane.rowIndex="2" GridPane.columnIndex="0">
           <image>
             <FontIcon styleClass="rate-icon" iconLiteral="fa-usd" />
           </image>
           <rates>
             <ValueControl fx:id="windSpeedControl"
-                          source="$controller.windSpeed" prefix="Prędkość wiatru:" title="prędkość wiatru" />
+                          source="$controller.windSpeed" prefix="Prędkość wiatru:" title="wind speed" />
             <ValueControl fx:id="windDirectionControl"
-                          source="$controller.windDirection" prefix="Kierunek wiatru:" title="kierunek wiatru" />
+                          source="$controller.windDirection" prefix="Kierunek wiatru:" title="wind direction" />
           </rates>
         </WeatherPane>
 
-        <WeatherPane GridPane.rowIndex="1" GridPane.columnIndex="1">
+        <WeatherPane GridPane.rowIndex="3" GridPane.columnIndex="0">
           <image>
             <Pane id="gold-icon">
               <shape>
@@ -82,8 +90,18 @@
           </image>
           <rates>
             <ValueControl fx:id="humidityControl"
-                          source="$controller.humidity" prefix="Wilgoć:" title="wilgoć" />
+                          source="$controller.humidity" prefix="Wilgoć:" title="humidity" />
           </rates>
+        </WeatherPane>
+
+        <WeatherPane GridPane.rowIndex="4" GridPane.columnIndex="0">
+          <JFXRadioButton fx:id="openWeatherRadio" selected="true" text="Open Weather Map" styleClass="custom-jfx-radio-button">
+            <toggleGroup>
+              <ToggleGroup fx:id="sourceChoice"/>
+            </toggleGroup>
+          </JFXRadioButton>
+          <JFXRadioButton fx:id="meteoRadio"
+                          text="Meteo" toggleGroup="$sourceChoice" styleClass="custom-jfx-radio-button"/>
         </WeatherPane>
 
       </GridPane>

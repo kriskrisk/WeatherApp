@@ -27,7 +27,7 @@
 .dialog-trigger {
     -fx-background-color: WHITE;
     -jfx-button-type: RAISED;
-    -fx-font-size: 14.0px;
+    -fx-font-size: 4.0px;
 }
 
 .jfx-dialog-layout {

@@ -26,7 +26,6 @@ import rx.Subscription;
 import rx.observables.JavaFxObservable;
 
 import java.io.IOException;
-import java.util.Currency;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -164,8 +163,8 @@ public class WeatherApp extends Application {
 
         mainStage.setScene(scene);
 
-        mainStage.setWidth(450);
-        mainStage.setHeight(200);
+        mainStage.setWidth(1000);
+        mainStage.setHeight(1000);
         mainStage.setResizable(false);
 
         addLogo();

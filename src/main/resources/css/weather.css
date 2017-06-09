@@ -91,14 +91,6 @@
     -fx-icon-size: 14.0;
 }
 
-.chevron-up {
-    -fx-icon-color: -green-700;
-}
-
-.chevron-down {
-    -fx-icon-color: -fx-red-color;
-}
-
 .tooltip Text {
     -fx-fill: WHITE;
     -fx-font-size: 14.0;
@@ -129,7 +121,6 @@
 .default-color0.chart-series-area-fill {
     -fx-fill: rgba(3.0, 169.0, 244.0, 0.15);
 }
-
 
 .default-color0.chart-area-symbol {
     -fx-background-color: #03A9F4, WHITE;
