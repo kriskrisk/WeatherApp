@@ -7,7 +7,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import io.reactivex.netty.RxNetty;
 import project.event.WeatherBasicEvent;
-import project.event.WeatherBasicEvent;
 import rx.Observable;
 import rx.exceptions.Exceptions;
 

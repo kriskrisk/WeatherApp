@@ -95,7 +95,7 @@ public class WeatherPane extends StackPane {
 
             int i = 0;
             for (Node n : rates) {
-                GridPane.setColumnIndex(n, 0);
+                GridPane.setColumnIndex(n, 1);
                 GridPane.setRowIndex(n, i);
                 GridPane.setRowSpan(n, 1);
                 GridPane.setHalignment(n, HPos.CENTER);

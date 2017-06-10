@@ -18,9 +18,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import project.event.Event;
-import project.network.DataSource;
-import project.network.MeteoDataSource;
-import project.network.OpenWeatherDataSource;
+import project.network.*;
 import rx.Observable;
 import rx.Subscription;
 import rx.observables.JavaFxObservable;
@@ -38,6 +36,7 @@ import project.event.SettingsRequestEvent;
 import project.event.WeatherEvent;
 import project.network.OpenWeatherDataSource;
 import project.network.MeteoDataSource;
+import project.network.PowietrzeDataSource;
 
 public class WeatherApp extends Application {
     private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(WeatherApp.class);
@@ -163,8 +162,8 @@ public class WeatherApp extends Application {
 
         mainStage.setScene(scene);
 
-        mainStage.setWidth(1000);
-        mainStage.setHeight(1000);
+        mainStage.setWidth(300);
+        mainStage.setHeight(600);
         mainStage.setResizable(false);
 
         addLogo();
@@ -219,7 +218,8 @@ public class WeatherApp extends Application {
 
     private void setupDataSources(Integer pollInterval) {
         DataSource[] sources = { new OpenWeatherDataSource(),
-                new MeteoDataSource() };
+                new MeteoDataSource(),
+                new PowietrzeDataSource() };
         for (DataSource source : sources) {
             sourceStreams.add(joinStream(source.dataSourceStream(pollInterval)));
         }

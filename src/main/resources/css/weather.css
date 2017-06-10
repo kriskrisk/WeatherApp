@@ -47,11 +47,11 @@
     -fx-max-width: 80.0px;
 }
 
-.rate-icon-container2 {
+.weather-icon-container2 {
     -fx-background-color: rgba(255.0, 255.0, 255.0, 0.95);
 }
 
-.rate-icon {
+.weather-icon {
     -fx-icon-size: 32.0px;
     -fx-icon-color: -fx-base-color;
 }

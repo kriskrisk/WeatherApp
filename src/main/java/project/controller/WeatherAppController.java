@@ -14,9 +14,9 @@ import java.util.concurrent.TimeUnit;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tooltip;
 import project.control.WeatherTooltip;
-import project.WeatherApp;
 import project.control.ValueControl;
 import project.event.*;
 import rx.Observable;
@@ -45,6 +45,12 @@ public class WeatherAppController {
     private ValueControl windDirectionControl;
 
     @FXML
+    private ValueControl dustPM10Control;
+
+    @FXML
+    private ValueControl dustPM25Control;
+
+    @FXML
     private ValueControl humidityControl;
 
     @FXML
@@ -60,6 +66,12 @@ public class WeatherAppController {
     private Button settingsButton;
 
     @FXML
+    RadioButton openWeatherRadio;
+
+    @FXML
+    RadioButton meteoRadio;
+
+    @FXML
     private void initialize() {
         initializeStatus();
 
@@ -71,27 +83,35 @@ public class WeatherAppController {
     }
 
     public Observable<RawWeatherEvent> getTemperature() {
-        return getCurrencyStream(WeatherBasicEvent::getTemperature);
+        return getWeatherStream(WeatherBasicEvent::getTemperature);
     }
 
     public Observable<RawWeatherEvent> getPressure() {
-        return getCurrencyStream(WeatherBasicEvent::getPressure);
+        return getWeatherStream(WeatherBasicEvent::getPressure);
     }
 
     public Observable<RawWeatherEvent> getClouds() {
-        return getCurrencyStream(WeatherBasicEvent::getClouds);
+        return getWeatherStream(WeatherBasicEvent::getClouds);
     }
 
     public Observable<RawWeatherEvent> getWindSpeed() {
-        return getCurrencyStream(WeatherBasicEvent::getWindSpeed);
+        return getWeatherStream(WeatherBasicEvent::getWindSpeed);
     }
 
     public Observable<RawWeatherEvent> getWindDirection() {
-        return getCurrencyStream(WeatherBasicEvent::getWindDirection);
+        return getWeatherStream(WeatherBasicEvent::getWindDirection);
+    }
+
+    public Observable<RawWeatherEvent> getDustPM10() {
+        return getDustStream(DustBasicEvent::getPM10Level);
+    }
+
+    public Observable<RawWeatherEvent> getDustPM25() {
+        return getDustStream(DustBasicEvent::getPM25Level);
     }
 
     public Observable<RawWeatherEvent> getHumidity() {
-        return getCurrencyStream(WeatherBasicEvent::getHumidity);
+        return getWeatherStream(WeatherBasicEvent::getHumidity);
     }
 
     private void initalizeRefreshHandler() {
@@ -100,6 +120,13 @@ public class WeatherAppController {
 
     private void initializeSettingsHandler() {
         joinStream(JavaFxObservable.actionEventsOf(settingsButton).map(e -> new SettingsRequestEvent()));
+    }
+
+    private void handleButtonAction(ActionEvent event) {
+        int base, extra = 0, total;
+        //which single radio button is selected?
+        if (rdobase.isSelected()) base = 17500;
+        else if (rdosport.isSelected()) base = 19700;
     }
 
     private void initializeStatus() {
@@ -182,14 +209,14 @@ public class WeatherAppController {
 
     }
 
-    private Observable<RawWeatherEvent> getCurrencyStream(Func1<WeatherBasicEvent, Double> extractor) {
+    private Observable<RawWeatherEvent> getWeatherStream(Func1<WeatherBasicEvent, Double> extractor) {
         return eventStream().eventsInFx().ofType(WeatherBasicEvent.class)
                 .map(e -> new RawWeatherEvent(e.getTimestamp(), extractor.call(e)));
     }
 
-//    private Observable<RawWeatherEvent> getGoodsStream(GoodType type) {
-//        return eventStream().eventsInFx().ofType(TradeableGoodRateEvent.class).filter(e -> e.getGood() == type)
-//                .map(e -> new RawWeatherEvent(e.getTimestamp(), e.getRate()));
-//    }
+    private Observable<RawWeatherEvent> getDustStream(Func1<DustBasicEvent, Double> extractor) {
+        return eventStream().eventsInFx().ofType(DustBasicEvent.class)
+                .map(e -> new RawWeatherEvent(e.getTimestamp(), extractor.call(e)));
+    }
 
 }
