@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 
 public final class RawWeatherEvent extends WeatherEvent {
     private final LocalDateTime timestamp;
-    private final double value;
+    private final Double value;
 
-    public RawWeatherEvent(final LocalDateTime timestamp, final double value) {
+    public RawWeatherEvent(final LocalDateTime timestamp, final Double value) {
         this.timestamp = timestamp;
         this.value = value;
     }
@@ -15,7 +15,7 @@ public final class RawWeatherEvent extends WeatherEvent {
         return this.timestamp;
     }
 
-    public double getValue() {
+    public Double getValue() {
         return this.value;
     }
 

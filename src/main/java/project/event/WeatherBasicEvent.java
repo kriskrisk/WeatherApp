@@ -3,7 +3,7 @@ package project.event;
 public class WeatherBasicEvent extends Event {
     private double temperature;
     private double pressure;
-    private double clouds;
+    private Double clouds;
     private double windSpeed;
     private double windDirection;
     private double humidity;
@@ -14,7 +14,7 @@ public class WeatherBasicEvent extends Event {
 
     private final Source source;
 
-    public WeatherBasicEvent(double temperature, double pressure, double clouds, double windSpeed, double windDirection, double humidity, Source source) {
+    public WeatherBasicEvent(double temperature, double pressure, Double clouds, double windSpeed, double windDirection, double humidity, Source source) {
         this.temperature = temperature;
         this.pressure = pressure;
         this.clouds = clouds;
@@ -32,7 +32,7 @@ public class WeatherBasicEvent extends Event {
         return pressure;
     }
 
-    public double getClouds() {
+    public Double getClouds() {
         return clouds;
     }
 

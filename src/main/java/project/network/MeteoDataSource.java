@@ -15,7 +15,6 @@ import rx.exceptions.Exceptions;
 public class MeteoDataSource extends DataSource {
 
     private static final String URL = "http://www.meteo.waw.pl/";
-    private static final int NO_INFO = 0;
 
     private class BitcoinRateNotFoundException extends Exception {
         private static final long serialVersionUID = 1L;
@@ -111,7 +110,7 @@ public class MeteoDataSource extends DataSource {
             }
 
             if (foundAll) {
-                return new WeatherBasicEvent(temperature, pressure, NO_INFO, windSpeed, windDirection,
+                return new WeatherBasicEvent(temperature, pressure, null, windSpeed, windDirection,
                         humidity, WeatherBasicEvent.Source.METEO);
             }
             throw Exceptions.propagate(new BitcoinRateNotFoundException());

@@ -45,8 +45,7 @@
           <RowConstraints percentHeight="15" />
           <RowConstraints percentHeight="15" />
           <RowConstraints percentHeight="15" />
-          <RowConstraints percentHeight="5" />
-          <RowConstraints percentHeight="5" />
+          <RowConstraints percentHeight="10" />
         </rowConstraints>
 
         <WeatherPane GridPane.rowIndex="0" GridPane.columnIndex="0">

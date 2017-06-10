@@ -19,7 +19,6 @@ import javafx.scene.control.Tooltip;
 import project.control.WeatherTooltip;
 import project.control.ValueControl;
 import project.event.*;
-import project.network.OpenWeatherDataSource;
 import rx.Observable;
 import rx.functions.Func1;
 import rx.observables.JavaFxObservable;

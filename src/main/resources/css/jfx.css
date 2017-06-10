@@ -19,6 +19,10 @@
     -fx-padding: 0 0 4 0;
 }
 
+JFXRadioButton {
+    -fx-text-fill: GREY;
+    -fx-alignment: CENTER-LEFT;
+}
 
 .jfx-dialog-overlay-pane {
     -fx-background-color: rgba(0.0, 0.0, 0.0, 0.1);

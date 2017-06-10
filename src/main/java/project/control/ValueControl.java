@@ -43,7 +43,11 @@ public class ValueControl extends Pane {
                 createContentControls();
             }
 
-            textControl.setText(format.format(e.getValue()));
+            if (e.getValue() == null) {
+                textControl.setText("-");
+            } else {
+                textControl.setText(format.format(e.getValue()));
+            }
         });
 
         sourceProperty.set(source);
@@ -108,10 +112,6 @@ public class ValueControl extends Pane {
         innerContainer.getChildren().addAll(prefixLabel, textControl, suffixLabel);
 
         getChildren().add(innerContainer);
-    }
-
-    private void addTrendIcon(Node icon) {
-        getChildren().add(icon);
     }
 
     @Override
