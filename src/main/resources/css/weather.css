@@ -30,7 +30,7 @@
     -fx-padding: 0.0;
 }
 
-#ratesGrid {
+#weatherGrid {
     -fx-padding: 10.0px;
     -fx-vgap: 5.0px;
     -fx-hgap: 5.0px;

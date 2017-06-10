@@ -19,6 +19,7 @@ import javafx.scene.control.Tooltip;
 import project.control.WeatherTooltip;
 import project.control.ValueControl;
 import project.event.*;
+import project.network.OpenWeatherDataSource;
 import rx.Observable;
 import rx.functions.Func1;
 import rx.observables.JavaFxObservable;
@@ -28,6 +29,7 @@ public class WeatherAppController {
 
     private static final int ERROR_MSG_MAX_LENGTH = 400;
     private static final int ERROR_MSG_DURATION = 30; // Show error icon for 30 seconds
+    private WeatherBasicEvent.Source currentSource = WeatherBasicEvent.Source.OPEN_WEATHER_MAP;
 
     @FXML
     private ValueControl temperatureControl;
@@ -66,10 +68,10 @@ public class WeatherAppController {
     private Button settingsButton;
 
     @FXML
-    RadioButton openWeatherRadio;
+    private RadioButton openWeatherRadio;
 
     @FXML
-    RadioButton meteoRadio;
+    private RadioButton meteoRadio;
 
     @FXML
     private void initialize() {
@@ -77,9 +79,14 @@ public class WeatherAppController {
 
         initalizeRefreshHandler();
         initializeSettingsHandler();
+        initializeChangeOfSourceHandler();
 
         initializeTooltips();
 
+    }
+
+    private void setCurrentSource(WeatherBasicEvent.Source currentSource) {
+        this.currentSource = currentSource;
     }
 
     public Observable<RawWeatherEvent> getTemperature() {
@@ -122,11 +129,14 @@ public class WeatherAppController {
         joinStream(JavaFxObservable.actionEventsOf(settingsButton).map(e -> new SettingsRequestEvent()));
     }
 
-    private void handleButtonAction(ActionEvent event) {
-        int base, extra = 0, total;
-        //which single radio button is selected?
-        if (rdobase.isSelected()) base = 17500;
-        else if (rdosport.isSelected()) base = 19700;
+    private void initializeChangeOfSourceHandler() {
+        JavaFxObservable.actionEventsOf(meteoRadio).subscribe(e ->
+                setCurrentSource(WeatherBasicEvent.Source.METEO));
+        joinStream(JavaFxObservable.actionEventsOf(meteoRadio).map(e -> new RefreshRequestEvent()));
+        JavaFxObservable.actionEventsOf(openWeatherRadio).subscribe(e ->
+                setCurrentSource(WeatherBasicEvent.Source.OPEN_WEATHER_MAP));
+        joinStream(JavaFxObservable.actionEventsOf(openWeatherRadio).map(e -> new RefreshRequestEvent()));
+
     }
 
     private void initializeStatus() {
@@ -197,7 +207,7 @@ public class WeatherAppController {
         Tooltip.install(errorIcon, errorTooltip);
 
         ValueControl[] weatherControls = { temperatureControl, pressureControl, cloudsControl, windSpeedControl,
-                windDirectionControl, humidityControl };
+                windDirectionControl, humidityControl, dustPM10Control, dustPM25Control };
         for (ValueControl control : weatherControls) {
             Tooltip tooltipPopup = new Tooltip();
             WeatherTooltip tooltipContent = new WeatherTooltip(control.getSource(), control.getTitle());
@@ -211,6 +221,7 @@ public class WeatherAppController {
 
     private Observable<RawWeatherEvent> getWeatherStream(Func1<WeatherBasicEvent, Double> extractor) {
         return eventStream().eventsInFx().ofType(WeatherBasicEvent.class)
+                .filter(e -> e.getSource().equals(currentSource))
                 .map(e -> new RawWeatherEvent(e.getTimestamp(), extractor.call(e)));
     }
 

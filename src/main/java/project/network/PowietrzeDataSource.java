@@ -1,5 +1,7 @@
 package project.network;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.reactivex.netty.RxNetty;
 import rx.Observable;
@@ -12,6 +14,9 @@ public class PowietrzeDataSource extends DataSource {
 
     private static final String PM10_JSON_KEY = "PM10";
     private static final String PM25_JSON_KEY = "PM2.5";
+    private static final String ID_JSON_KEY = "stationId";
+    private static final String VALUES_JSON_KEY = "values";
+    private static final int ID_NUMBER = 544;
 
     @Override
     protected Observable<DustBasicEvent> makeRequest() {
@@ -22,14 +27,20 @@ public class PowietrzeDataSource extends DataSource {
                 // respond with JSON
                 .compose(this::unpackResponse) // extract response body to a
                 // string
-                .map(JsonHelper::asJsonObject) // convert this string to a
+                .map(JsonHelper::asJsonArray) // convert this string to a
                 // JsonObject
-                .map(jsonObject -> {
-                    JsonObject dustJsonObject = jsonObject.getAsJsonArray().get(13)
-                            .getAsJsonObject();
-                    return new DustBasicEvent(
-                            dustJsonObject.get(PM10_JSON_KEY).getAsDouble(),
-                            dustJsonObject.get(PM25_JSON_KEY).getAsDouble());
+                .map(jsonArray -> {
+                    for (JsonElement o : jsonArray) {
+                        JsonObject current = o.getAsJsonObject();
+                        if (current.get(ID_JSON_KEY).getAsInt() == ID_NUMBER) {
+                            JsonObject data = current.get(VALUES_JSON_KEY).getAsJsonObject();
+                            return new DustBasicEvent(
+                                    data.get(PM10_JSON_KEY).getAsDouble(),
+                                    data.get(PM25_JSON_KEY).getAsDouble());
+                        }
+                    }
+
+                    throw new IllegalStateException();
                 });
     }
 

@@ -16,7 +16,7 @@ import javafx.scene.layout.StackPane;
 import java.io.IOException;
 import java.util.Iterator;
 
-@DefaultProperty("rates")
+@DefaultProperty("values")
 public class WeatherPane extends StackPane {
 
     private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(WeatherPane.class);
@@ -30,7 +30,7 @@ public class WeatherPane extends StackPane {
     private StackPane imageContainer;
 
     private ObjectProperty<Node> image;
-    private ObservableList<Node> rates = FXCollections.observableArrayList();
+    private ObservableList<Node> values = FXCollections.observableArrayList();
 
     public ObjectProperty<Node> imageProperty() {
         if (image == null) {
@@ -67,8 +67,8 @@ public class WeatherPane extends StackPane {
         imageProperty().set(image);
     }
 
-    public ObservableList<Node> getRates() {
-        return rates;
+    public ObservableList<Node> getValues() {
+        return values;
     }
 
     public WeatherPane() throws IOException {
@@ -76,11 +76,11 @@ public class WeatherPane extends StackPane {
         loader.setController(this);
         getChildren().add(loader.load());
 
-        rates.addListener((Observable o) -> {
-            int size = rates.size();
+        values.addListener((Observable o) -> {
+            int size = values.size();
             int constraintsSize = containerGrid.getRowConstraints().size();
             if (size > constraintsSize) {
-                log.error("Too many rates for RatePane!");
+                log.error("Too many values for RatePane!");
                 return;
             }
 
@@ -91,10 +91,10 @@ public class WeatherPane extends StackPane {
                 }
             }
 
-            containerGrid.getChildren().addAll(rates);
+            containerGrid.getChildren().addAll(values);
 
             int i = 0;
-            for (Node n : rates) {
+            for (Node n : values) {
                 GridPane.setColumnIndex(n, 1);
                 GridPane.setRowIndex(n, i);
                 GridPane.setRowSpan(n, 1);
@@ -103,7 +103,7 @@ public class WeatherPane extends StackPane {
             }
 
             if (size < constraintsSize) {
-                GridPane.setRowSpan(rates.get(size - 1), constraintsSize - i + 1);
+                GridPane.setRowSpan(values.get(size - 1), constraintsSize - i + 1);
             }
         });
     }

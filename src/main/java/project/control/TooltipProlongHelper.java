@@ -10,20 +10,6 @@ import javafx.util.Duration;
 public class TooltipProlongHelper {
     private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(TooltipProlongHelper.class);
 
-    /*
-     * Some hardcore stuff here. JavaFX is surprisingly inflexible when it comes
-     * to displaying tooltips. It does have a builtin class for that, namely
-     * javafx.scene.control.Tooltip but the class contains hardcoded constants
-     * that, for instance, specify the duration for which all tooltips remain
-     * visible. When the timer elapses tooltips autohide themselves. This
-     * behavior cannot be easily altered as the mechanism is private to
-     * javafx.scene.control.Tooltip . The code below accesses that private data.
-     * This is ugly and fragile, no doubt about it. But the alternative way is
-     * to write our own implementation of tooltips which is a lot of code
-     * (javafx.scene.control.Tooltip is just shy of 1k lines of code).
-     *
-     * Kids, don't try this at home!
-     */
     public static void setTooltipDuration(Duration openDelay, Duration visibleDuration, Duration closeDelay) {
         try {
             Field field = Tooltip.class.getDeclaredField("BEHAVIOR");

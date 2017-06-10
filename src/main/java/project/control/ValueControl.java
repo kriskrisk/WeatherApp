@@ -22,6 +22,7 @@ public class ValueControl extends Pane {
 
     private Text prefixLabel;
     private Text textControl;
+    private Text suffixLabel;
 
     private ObjectProperty<Observable<RawWeatherEvent>> sourceProperty = new SimpleObjectProperty<>();
 
@@ -30,6 +31,7 @@ public class ValueControl extends Pane {
 
     private StringProperty prefixProperty = new SimpleStringProperty();
     private StringProperty titleProperty = new SimpleStringProperty("-");
+    private StringProperty suffixProperty = new SimpleStringProperty();
 
     public Observable<RawWeatherEvent> getSource() {
         return sourceProperty.get();
@@ -64,6 +66,14 @@ public class ValueControl extends Pane {
         prefixProperty.set(prefix);
     }
 
+    public String getSuffix() {
+        return suffixProperty.get();
+    }
+
+    public void setSuffix(String suffix) {
+        suffixProperty.set(suffix);
+    }
+
     public String getTitle() {
         return titleProperty.get();
     }
@@ -89,9 +99,13 @@ public class ValueControl extends Pane {
         prefixLabel.textProperty().bind(prefixProperty);
         prefixLabel.getStyleClass().add("helper-label");
 
+        suffixLabel = new Text();
+        suffixLabel.textProperty().bind(suffixProperty);
+        suffixLabel.getStyleClass().add("rate-value");
+
         innerContainer = new HBox();
         innerContainer.getStyleClass().add("value-container");
-        innerContainer.getChildren().addAll(prefixLabel, textControl);
+        innerContainer.getChildren().addAll(prefixLabel, textControl, suffixLabel);
 
         getChildren().add(innerContainer);
     }

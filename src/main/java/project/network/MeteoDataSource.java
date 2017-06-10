@@ -111,7 +111,8 @@ public class MeteoDataSource extends DataSource {
             }
 
             if (foundAll) {
-                return new WeatherBasicEvent(temperature, pressure, NO_INFO, windSpeed, windDirection, humidity);
+                return new WeatherBasicEvent(temperature, pressure, NO_INFO, windSpeed, windDirection,
+                        humidity, WeatherBasicEvent.Source.METEO);
             }
             throw Exceptions.propagate(new BitcoinRateNotFoundException());
         });

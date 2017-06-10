@@ -49,7 +49,7 @@ public class WeatherApp extends Application {
     private static final String MATERIAL_CSS = "/css/jfoenix-design.css";
     private static final String JFX_CSS = "/css/jfx.css";
 
-    private static final String[] LOGOS = { "/icons/bitcoin16.png", "/icons/bitcoin24.png", "/icons/bitcoin32.png" };
+    private static final String[] LOGOS = { "/icons/weather.png" };
 
     private class DialogControllerBase {
         @FXML

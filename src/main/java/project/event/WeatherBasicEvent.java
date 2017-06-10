@@ -8,13 +8,20 @@ public class WeatherBasicEvent extends Event {
     private double windDirection;
     private double humidity;
 
-    public WeatherBasicEvent(double temperature, double pressure, double clouds, double windSpeed, double windDirection, double humidity) {
+    public enum Source {
+        OPEN_WEATHER_MAP, METEO
+    }
+
+    private final Source source;
+
+    public WeatherBasicEvent(double temperature, double pressure, double clouds, double windSpeed, double windDirection, double humidity, Source source) {
         this.temperature = temperature;
         this.pressure = pressure;
         this.clouds = clouds;
         this.windSpeed = windSpeed;
         this.windDirection = windDirection;
         this.humidity = humidity;
+        this.source = source;
     }
 
     public double getTemperature() {
@@ -39,6 +46,10 @@ public class WeatherBasicEvent extends Event {
 
     public double getHumidity() {
         return humidity;
+    }
+
+    public Source getSource() {
+        return source;
     }
 
     public java.lang.String toString() {

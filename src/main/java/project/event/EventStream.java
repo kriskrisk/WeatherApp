@@ -86,4 +86,3 @@ public class EventStream {
         return obs -> obs.observeOn(Schedulers.io());
     }
 }
-
